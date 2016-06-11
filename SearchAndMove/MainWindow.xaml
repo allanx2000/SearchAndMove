@@ -48,7 +48,7 @@
                 <Button Command="{Binding SearchCommand}">Search</Button>
             </StackPanel>
 
-            <TextBox Text="{Binding Query}"/>
+            <ComboBox IsEditable="True" Text="{Binding Query}" ItemsSource="{Binding RecentQueries}"/>
         </DockPanel>
 
         <GroupBox Grid.Row="2" Header="Results">
@@ -102,7 +102,11 @@
                 <Button Command="{Binding MoveCommand}">Move</Button>
             </StackPanel>
 
+            <ComboBox IsEditable="True" Text="{Binding Destination}" ItemsSource="{Binding RecentDestination}"/>
+
+            <!--
             <TextBox Text="{Binding Destination}"/>
+            -->
         </DockPanel>
 
 

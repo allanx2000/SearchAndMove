@@ -14,6 +14,11 @@ namespace SearchAndMove.ViewModels
 {
     public class MainWindowViewModel : ViewModel
     {
+        public MainWindowViewModel()
+        {
+            InitializeRecents();
+        }
+
         #region Recents
 
         private ObservableCollection<string> recentQueries;
@@ -25,7 +30,7 @@ namespace SearchAndMove.ViewModels
         private readonly Properties.Settings Settings = Properties.Settings.Default;
 
 
-        private void LoadRecents()
+        private void InitializeRecents()
         {        
             recentQueries = new ObservableCollection<string>();
             LoadList(recentQueries, Settings.RecentQueries);
