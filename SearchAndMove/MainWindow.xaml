@@ -1,0 +1,110 @@
+﻿<Window x:Class="SearchAndMove.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SearchAndMove"
+        mc:Ignorable="d"
+        Title="Search And Move" 
+        MinHeight="800" Height="800" Width="600"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:HasResultsConverter x:Key="hasResultsConverter"/>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Row="0" Header="Search Paths">
+            <Grid>
+                <!-- Search Paths -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+
+                <ListBox Name="SearchPaths" Grid.Column="0" ItemsSource="{Binding Paths}" SelectedItem="{Binding SelectedPath}" DragEnter="SearchPaths_DragEnter" Drop="SearchPaths_Drop" AllowDrop="True">
+                </ListBox>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" >
+                    <!--Orientation="Horizontal" HorizontalAlignment="Center"-->
+
+                    <Button Command="{Binding AddPathCommand}">Add</Button>
+                    <Button Command="{Binding RemovePathCommand}">Remove</Button>
+                    <Button Command="{Binding ClearPathsCommand}">Clear All</Button>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <DockPanel LastChildFill="True" Grid.Row="1" >
+            <Label DockPanel.Dock="Left" >Query:</Label>
+
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <CheckBox VerticalAlignment="Center" IsChecked="{Binding IsRecursive}">Recursive</CheckBox>
+                <Button Command="{Binding SearchCommand}">Search</Button>
+            </StackPanel>
+
+            <TextBox Text="{Binding Query}"/>
+        </DockPanel>
+
+        <GroupBox Grid.Row="2" Header="Results">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+
+                <ListBox Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Results}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <StackPanel Visibility="{Binding Path=HasResult, Converter={StaticResource hasResultsConverter}, ConverterParameter=Reverse}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label FontWeight="Bold" Foreground="Red">No results found in:</Label>
+                                        <Label>
+                                            <TextBlock Text="{Binding Path}"/>
+                                        </Label>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <StackPanel Visibility="{Binding Path=HasResult, Converter={StaticResource hasResultsConverter}}">
+                                    <CheckBox IsChecked="{Binding Selected}">
+                                        <TextBlock Text="{Binding Path}"/>
+                                    </CheckBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
+                    <Button Command="{Binding SelectAllCommand}">
+                        <TextBlock TextAlignment="Center">Select<LineBreak/>All</TextBlock>
+                    </Button>
+                    <Button Command="{Binding DeselectAllCommand}">
+                        <TextBlock TextAlignment="Center">Deselect<LineBreak/>All</TextBlock>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+
+        <DockPanel LastChildFill="True" Grid.Row="3" >
+            <Label DockPanel.Dock="Left" >Move To:</Label>
+
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Command="{Binding BrowseDestinationCommand}">...</Button>
+                <Label Width="20"/>
+                <CheckBox VerticalAlignment="Center" IsChecked="{Binding DoCopy}">Copy</CheckBox>
+                <Button Command="{Binding MoveCommand}">Move</Button>
+            </StackPanel>
+
+            <TextBox Text="{Binding Destination}"/>
+        </DockPanel>
+
+
+    </Grid>
+</Window>

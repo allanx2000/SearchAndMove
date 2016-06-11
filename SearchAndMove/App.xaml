@@ -1,0 +1,9 @@
+﻿<Application x:Class="SearchAndMove.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SearchAndMove"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary Source="pack://application:,,,/Innouvous.Utils.ResourceDictionaries;component/GenericDictionary45.xaml"/>
+    </Application.Resources>
+</Application>
