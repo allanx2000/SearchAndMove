@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Collections.Specialized;
+using System.Diagnostics;
 
 namespace SearchAndMove.ViewModels
 {
@@ -17,6 +18,26 @@ namespace SearchAndMove.ViewModels
         public MainWindowViewModel()
         {
             InitializeRecents();
+        }
+
+        public ICommand ShowOptionsCommand
+        {
+            get { return new CommandHelper(ShowOptions); }
+        }
+
+        private void ShowOptions()
+        {
+            var options = new OptionsWindow();
+            options.ShowDialog();
+
+            if (options.RefreshRecentLists)
+            {
+                recentQueries.Clear();
+                LoadList(recentQueries, Settings.RecentQueries);
+
+                recentDestinations.Clear();
+                LoadList(recentDestinations, Settings.RecentPaths);
+            }
         }
 
         #region Recents
@@ -208,6 +229,7 @@ namespace SearchAndMove.ViewModels
 
                 RecentListUtil.Upsert(RecentQueries, Query);
                 SaveRecentQueries();
+                ResultsChanged();
             }
             catch (Exception e)
             {
@@ -248,9 +270,29 @@ namespace SearchAndMove.ViewModels
             get { return results; }
         }
 
+        public string ResultSize
+        {
+            get
+            {
+                if (lastQuery == null)
+                    return "NA";
+                else
+                {
+                    int found = results.Count(x => x.HasResult);
+                    return found.ToString();
+                }
+            }
+        }
+
+        private void ResultsChanged()
+        {
+            RaisePropertyChanged("ResultSize");
+        }
+
         private void ClearResults()
         {
             Results.Clear();
+            ResultsChanged();
         }
 
         public ICommand DeselectAllCommand
@@ -341,6 +383,11 @@ namespace SearchAndMove.ViewModels
 
                 RecentListUtil.Upsert(RecentDestinations, Destination);
                 SaveRecentDestinations();
+
+
+                //Open Folder
+                if (Settings.OpenDestinationFolder)
+                    Process.Start(Destination);
 
                 MessageBoxFactory.ShowInfo(ctr + " files were moved to " + Destination, "Moved Successfully");
             }

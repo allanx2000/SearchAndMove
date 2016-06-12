@@ -36,6 +36,8 @@
                     <Button Command="{Binding AddPathCommand}">Add</Button>
                     <Button Command="{Binding RemovePathCommand}">Remove</Button>
                     <Button Command="{Binding ClearPathsCommand}">Clear All</Button>
+                    <Label Height="40"/>
+                    <Button Command="{Binding ShowOptionsCommand}">Options</Button>
                 </StackPanel>
             </Grid>
         </GroupBox>
@@ -58,7 +60,17 @@
                     <ColumnDefinition Width="80"/>
                 </Grid.ColumnDefinitions>
 
-                <ListBox Grid.Row="0" Grid.Column="0" ItemsSource="{Binding Results}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+                    <Label>Found: </Label>
+                    <Label Content="{Binding ResultSize}"/>
+                </StackPanel>
+                
+                <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Results}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
@@ -81,7 +93,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
 
-                <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
+                <StackPanel Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Center">
                     <Button Command="{Binding SelectAllCommand}">
                         <TextBlock TextAlignment="Center">Select<LineBreak/>All</TextBlock>
                     </Button>

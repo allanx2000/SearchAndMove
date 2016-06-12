@@ -44,5 +44,17 @@ namespace SearchAndMove.Properties {
                 this["RecentPaths"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OpenDestinationFolder {
+            get {
+                return ((bool)(this["OpenDestinationFolder"]));
+            }
+            set {
+                this["OpenDestinationFolder"] = value;
+            }
+        }
     }
 }
